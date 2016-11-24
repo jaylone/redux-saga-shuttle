@@ -1,1 +1,2 @@
-Change to redux-shuttle[https://github.com/jaylone/redux-shuttle]
+A saga plugin for redux-shuttle.
+[https://github.com/jaylone/redux-shuttle]

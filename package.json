@@ -1,0 +1,58 @@
+{
+  "name": "redux-saga-shuttle",
+  "version": "0.0.1",
+  "description": "A saga plugin for redux-shuttle",
+  "main": "./dist/index.js",
+  "scripts": {
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jaylone/redux-saga-shuttle.git"
+  },
+  "keywords": [
+    "redux",
+    "saga",
+    "redux-saga",
+    "side-effects",
+    "shuttle",
+    "redux-shuttle",
+    "redux-saga-shuttle"
+  ],
+  "author": "jaylone",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/jaylone/redux-saga-shuttle/issues"
+  },
+  "homepage": "https://github.com/jaylone/redux-saga-shuttle#readme",
+  "dependencies": {
+    "redux-saga": "^0.13.0",
+    "redux-shuttle": "0.0.5"
+  },
+  "devDependencies": {
+    "axios": "^0.15.2",
+    "babel-core": "^6.18.2",
+    "babel-eslint": "^7.1.1",
+    "babel-loader": "^6.2.8",
+    "babel-plugin-add-module-exports": "^0.2.1",
+    "babel-plugin-transform-decorators-legacy": "^1.3.4",
+    "babel-plugin-transform-es2015-modules-umd": "^6.18.0",
+    "babel-preset-es2015": "^6.18.0",
+    "babel-preset-react": "^6.16.0",
+    "babel-preset-stage-0": "^6.16.0",
+    "babel-register": "^6.18.0",
+    "eslint": "^3.10.2",
+    "eslint-plugin-react": "^6.7.1",
+    "file-loader": "^0.9.0",
+    "react": "^15.4.0",
+    "react-dom": "^15.4.1",
+    "react-redux": "^4.4.6",
+    "redux": "^3.6.0",
+    "redux-saga": "^0.13.0",
+    "url-loader": "^0.5.7",
+    "webpack": "^1.13.3",
+    "webpack-dev-middleware": "^1.8.4",
+    "webpack-dev-server": "^1.16.2",
+    "webpack-hot-middleware": "^2.13.2"
+  }
+}
