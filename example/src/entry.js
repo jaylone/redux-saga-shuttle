@@ -4,16 +4,17 @@ import { createStore, combineReducers, bindActionCreators } from 'redux';
 import { Provider, connect } from 'react-redux';
 import { createReducer } from 'redux-shuttle';
 import axios from 'axios';
+import createSagaMiddleware, { END } from 'redux-saga';
+const sagaMiddleware = createSagaMiddleware();
 
-import shuttle, { units, actions, reducer } from './shuttle';
+import { actions, reducer as author } from './shuttle';
 const initState = {
   list: ['King\'s', 'Landing.'],
   name: '',
   visible: false
 }
 
-console.log(shuttle);
-const reducers = combineReducers({author: createReducer(initState,units)});
+const reducers = combineReducers({ author });
 
 @connect(state => state, dispatch => {
   return {

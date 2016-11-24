@@ -27,7 +27,7 @@
   "homepage": "https://github.com/jaylone/redux-saga-shuttle#readme",
   "dependencies": {
     "redux-saga": "^0.13.0",
-    "redux-shuttle": "0.0.5"
+    "redux-shuttle": "0.0.6"
   },
   "devDependencies": {
     "axios": "^0.15.2",

@@ -25,7 +25,6 @@ const shuttle = createShuttle(initState, {
   }]
 });
 
-
 function* fetchAPI() {
   const { data } = yield call(() => axios.get('/api'));
   if ( data.ret ) {
@@ -34,12 +33,12 @@ function* fetchAPI() {
 }
 
 function* watchFetchAPI() {
-  yield* takeEvery(shuttle.Types, fetchAPI);
+  yield* takeEvery(shuttle.Types.FETCH_LIST, fetchAPI);
 }
 
 function* saga() {
   yield [
-    watchFetchAPI
+    fork(watchFetchAPI)
   ]
 }
 
