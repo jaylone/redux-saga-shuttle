@@ -5,6 +5,7 @@ var commonConfig = require('./webpack.common.config');
 module.exports = Object.assign(commonConfig, {
   src: './src',
   entry: [
+    'babel-polyfill',
     './example/src/entry.js'
   ],
   output: {

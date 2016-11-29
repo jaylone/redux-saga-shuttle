@@ -32,7 +32,7 @@ app.get('/api', function(req, res) {
     }
   };
 
-  res.statusCode = 500;
+  res.statusCode = 200;
   res.end(JSON.stringify(data));
 });
 
