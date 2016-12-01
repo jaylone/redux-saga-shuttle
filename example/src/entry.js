@@ -3,65 +3,31 @@ import ReactDom from 'react-dom';
 import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware, { END } from 'redux-saga';
-import { sagas, bindSagaShuttle, shuttle as author } from './sagaShuttle';
-import createShuttleTree from 'src/lib/createShuttleTree';
+import { createShuttleTree } from 'redux-shuttle';
+import { combineSagas } from 'src/index';
 
-const reducers = createShuttleTree({ author });
+import { sagas as authorSaga, shuttle as author } from './sagaShuttle';
+import { sagas as custSaga, shuttle as cust } from './custSagaShuttle';
+import App from './App';
+
+const reducers = createShuttleTree({ author, cust });
 const sagaMiddleware = createSagaMiddleware();
 const enhancer = window.devToolsExtension ? window.devToolsExtension() : f => f;
 const store = createStore(reducers, compose(applyMiddleware(sagaMiddleware), enhancer));
 store.runSaga = sagaMiddleware.run;
 store.close = () => store.dispatch(END);
-store.runSaga(sagas);
-
-@bindSagaShuttle
-class App extends Component {
-
-  setList() {
-    const props = this.props;
-
-    props.actions.setList(['Winter', 'is', 'coming.']);
-  }
-
-  fetchList() {
-    const props = this.props;
-
-    props.actions.fetchList();
-  }
-
-  sagaSelect() {
-    const props = this.props;
-
-    props.actions.sagaSelect();
-  }
-
-  toggleModal() {
-    const props = this.props;
-
-    props.actions.toggleModal();
-  }
-
-  render() {
-    const props = this.props;
-
-    console.log(props);
-
-    return (
-      <div>
-        <p>Hello world.</p>
-        <p>{ props.list.join(' ') }</p>
-        <p><button onClick={::this.setList}>Set List</button></p>
-        <p><button onClick={::this.fetchList}>Fetch List</button></p>
-        <p><button onClick={::this.sagaSelect}>Saga Select</button></p>
-        <p><button onClick={::this.toggleModal}>custom generator</button></p>
-      </div>
-    )
-  }
-};
+// const task = store.runSaga(function* (){
+//   yield* authorSaga();
+//   yield* custSaga();
+// });
+const task = store.runSaga(combineSagas(authorSaga, custSaga));
+task.done.catch((err) => {
+  if (console) console.log(err);
+});
 
 ReactDom.render(
   <Provider store={store}>
-    <App name="jaylone" />
+    <App wrapperName="jaylone" />
   </Provider>,
   document.getElementById('root')
 );

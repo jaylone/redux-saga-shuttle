@@ -1,32 +1,40 @@
-import { merge, filter, dissoc, without, mapObjIndexed, keys, reduce, pipe, map } from 'ramda';
-import { createShuttle, validator } from 'redux-shuttle';
+import { without, keys, reduce, pipe, map } from 'ramda';
 import { takeEvery } from 'redux-saga';
 import { call, fork, put, select, take } from 'redux-saga/effects';
-import { isGenerator, REDUCER_KEY } from './util';
+import { createShuttle, bindShuttle, mapShuttleState } from 'redux-shuttle';
+import { isGenerator, SHUTTLE_KEY, REDUCER_KEY } from 'redux-shuttle/helper';
+import { isObject, isArray, isString, isNull, isUndefined } from 'redux-shuttle/validator';
+import { console, validObj } from './util';
 
-import mapShuttleState from './mapShuttleState';
-import mapShuttleDispatch from './mapShuttleDispatch';
-import bindShuttle from './bindShuttle';
-import createShuttleTree from './createShuttleTree';
-
-const { isObject, isArray, isString } = validator;
-
-const innerProps = ['watchers', 'initState', 'actions', 'state'];
+const innerProps = [
+  'watchers',
+  'custom',
+  'actions',
+  'state',
+  'getState',
+  'reducer',
+  'namespace',
+  'sagas',
+  'handlers',
+  SHUTTLE_KEY,
+  REDUCER_KEY
+];
 
 const innerOpts = Symbol('innerOpts');
 const init = Symbol('init');
 const watchSaga = Symbol('watchSaga');
-const exportSagas = Symbol('exportSagas');
+const getWatcher = Symbol('getWatcher');
+const getCustomWatcher = Symbol('getCustomWatcher');
 
 class SagaShuttle {
   constructor(options) {
     const self = this;
+    const shuttle = options.shuttle;
 
-    self.sagaWatchers = '';
-    self.namespace = '';
-    self.sagas = function*(){};
-
-    self.bindSagaShuttle = bindShuttle(options.shuttle);
+    self.sagas = function*() {};
+    self.namespace = shuttle.namespace;
+    self.bindSagaShuttle = bindShuttle(shuttle);
+    self.actions = shuttle.actions;
     self[innerOpts] = options;
     return self[init](options);
   }
@@ -45,7 +53,7 @@ class SagaShuttle {
 
     const _self = appendProps(options);
 
-    this[watchSaga]();
+    self[watchSaga]();
     return _self;
   }
 
@@ -53,26 +61,91 @@ class SagaShuttle {
     const self = this;
     const { types } = self.shuttle;
     const watchers = this[innerOpts]['watchers'];
+    const custom = this[innerOpts]['custom'];
+    let sagas = [];
 
-    self.sagas = function* () {
-      yield pipe(keys, map(action => fork(function* () {
-        const handler = watchers[action];
-        if (isString(handler)) {
-          yield* takeEvery(types[action], self[handler]);
-        } else if (isGenerator(handler)) {
-          yield handler.bind(self);
-        } else {
-          throw new Error('wather handler should be a generator.')
-        }
-      })))(watchers);
+    if (validObj(watchers)) {
+      sagas = sagas.concat(self[getWatcher]());
+    }
+
+    if (validObj(custom)) {
+      sagas = sagas.concat(self[getCustomWatcher]());
+    }
+
+    if (sagas.length > 0) {
+      self.sagas = function* () {
+        yield sagas;
+      }
     }
   }
-}
 
-const createSagaShuttle = (options) => {
-  const { initState, actions, effects } = options;
+  [getWatcher]() {
+    const self = this;
+    const { types } = self.shuttle;
+    const watchers = this[innerOpts]['watchers'];
 
-  const shuttle = createShuttle(initState, actions);
+    let ret = [];
+
+    if (!validObj(watchers)) {
+      return ret;
+    }
+
+    ret = pipe(keys, map(action => fork(function* () {
+      const handler = watchers[action];
+      const pattern = types[action];
+
+      if (isGenerator(self[handler])) {
+
+        if (isUndefined(pattern) || isNull(pattern)) {
+          throw new Error(`action '${action}' did not existing in shuttle.`);
+        }
+
+        yield* takeEvery(types[action], function* (){
+          try {
+            yield self[handler].apply(self, arguments);
+          } catch (e) {
+            console(e);
+          }
+        });
+      } else {
+        throw new Error('wather handler should be a generator.')
+      }
+    })))(watchers);
+
+    return ret;
+  }
+
+  [getCustomWatcher]() {
+    const self = this;
+    const { types } = self.shuttle;
+    const custom = this[innerOpts]['custom'];
+    let ret = [];
+
+    if (!validObj(custom)) {
+      return ret;
+    }
+
+    ret = pipe(keys, map(watcher => fork(function* () {
+      const handler = custom[watcher];
+
+      if (isGenerator(handler)) {
+        try {
+          yield handler.apply(self, arguments);
+        } catch (e) {
+          console(e);
+        }
+      } else {
+        throw new Error('wather handler should be a generator.')
+      }
+    })))(custom);
+
+    return ret;
+  }
+
+  * getState() {
+    const shuttle = this.shuttle;
+    return yield select(mapShuttleState(shuttle));
+  }
 }
 
 export default SagaShuttle;

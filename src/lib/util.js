@@ -1,17 +1,10 @@
-import { validator } from 'redux-shuttle';
+import { isEmpty } from 'ramda';
+import { isObject } from 'redux-shuttle/validator';
 
-const { isObject } = validator;
-const REDUCER_KEY = '@@redux-shuttle/REDUCER_KEY';
-const SHUTTLE_KEY = '@@redux-shuttle/SHUTTLE_KEY';
-
-const isGenerator = (fn) => fn.constructor.name === "GeneratorFunction";
-const isShuttle = (obj) => {
-  return isObject(obj) && Boolean(obj[SHUTTLE_KEY]);
+export function console() {
+  window && window.console && window.console.log(...arguments);
 }
 
-export default {
-  isGenerator,
-  isShuttle,
-  SHUTTLE_KEY,
-  REDUCER_KEY
-};
+export function validObj(obj) {
+  return isObject(obj) && !isEmpty(obj);
+}
