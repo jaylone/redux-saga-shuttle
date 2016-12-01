@@ -4,7 +4,7 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { createShuttleTree } from 'redux-shuttle';
-import { combineSagas } from 'src/index';
+import { combineSagas } from 'dist/index';
 
 import { sagas as authorSaga, shuttle as author } from './sagaShuttle';
 import { sagas as custSaga, shuttle as cust } from './custSagaShuttle';

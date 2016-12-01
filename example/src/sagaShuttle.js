@@ -1,30 +1,31 @@
 import { createShuttle } from 'redux-shuttle';
-import { SagaShuttle } from 'src/index';
 import { takeEvery } from 'redux-saga';
 import { call, fork, put, select, take } from 'redux-saga/effects';
 import axios from 'axios';
+import { SagaShuttle } from 'dist/index';
+import Immutable from 'immutable';
 
-const initState = {
+const initState = Immutable.fromJS({
   list: ['King\'s', 'Landing.'],
   name: '',
   visible: false
-}
+})
 
 // create shuttle: bundling reducer, actions and action types
 const shuttle = createShuttle('APP/author', initState, {
   setList: ['list', (state, action) => {
-    return Object.assign({}, state, {list: action.list});
+    return state.set('list', Immutable.fromJS(action.list));
   }],
   setName: ['name', (state, action) => {
     return Object.assign({}, state, {list: action.name});
   }],
   toggleModal: (state, action) => {
-    return Object.assign({}, state, {visible: !state.visible});
+    return state.set('visible', !state.get('visible'));
   },
   toggleModalA: null,
   fetchList: ['param'],
   recieveList: ['data', (state, actions) => {
-    return Object.assign({}, state, data)
+    return state.merge(data)
   }],
   sagaSelect: null
 });
