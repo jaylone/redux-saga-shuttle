@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-shuttle",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "A saga plugin for redux-shuttle",
   "main": "./dist/index.js",
   "scripts": {
