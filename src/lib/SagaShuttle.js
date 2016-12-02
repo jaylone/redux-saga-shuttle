@@ -90,29 +90,30 @@ class SagaShuttle {
       return ret;
     }
 
-    ret = pipe(keys, map(action => fork(function* () {
-      const handler = watchers[action];
-      const pattern = types[action];
+    const mapToWatcher = map(action => {
+      return fork(function* () {
+        const handler = watchers[action];
+        const pattern = types[action];
 
-      if (isGenerator(self[handler])) {
-
-        if (isUndefined(pattern) || isNull(pattern)) {
-          throw new Error(`action '${action}' did not existing in shuttle.`);
-        }
-
-        yield* takeEvery(types[action], function* (){
-          try {
-            yield self[handler].apply(self, arguments);
-          } catch (e) {
-            console(e);
+        if (isGenerator(self[handler])) {
+          if (isUndefined(pattern) || isNull(pattern)) {
+            throw new Error(`action '${action}' did not existing in shuttle.`);
           }
-        });
-      } else {
-        throw new Error('wather handler should be a generator.')
-      }
-    })))(watchers);
 
-    return ret;
+          return yield* takeEvery(pattern, function* () {
+            try {
+              yield self[handler].apply(self, arguments);
+            } catch (e) {
+              console(e);
+            }
+          });
+        } else {
+          throw new Error('wather handler should be a generator.')
+        }
+      });
+    });
+
+    return pipe(keys, mapToWatcher)(watchers);
   }
 
   [getCustomWatcher]() {
