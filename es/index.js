@@ -1,8 +1,8 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['module', 'exports', 'src/lib/SagaShuttle', 'src/lib/combineSagas'], factory);
+    define(['module', 'exports', './lib/SagaShuttle', './lib/combineSagas'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(module, exports, require('src/lib/SagaShuttle'), require('src/lib/combineSagas'));
+    factory(module, exports, require('./lib/SagaShuttle'), require('./lib/combineSagas'));
   } else {
     var mod = {
       exports: {}
