@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', 'ramda', 'redux-saga', 'redux-saga/effects', 'redux-shuttle', 'redux-shuttle/helper', 'redux-shuttle/validator', './util'], factory);
+    define(['module', 'exports', 'ramda', 'redux-saga', 'redux-saga/effects', 'redux-shuttle', 'redux-shuttle/helper', 'redux-shuttle/validator', './util'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('ramda'), require('redux-saga'), require('redux-saga/effects'), require('redux-shuttle'), require('redux-shuttle/helper'), require('redux-shuttle/validator'), require('./util'));
+    factory(module, exports, require('ramda'), require('redux-saga'), require('redux-saga/effects'), require('redux-shuttle'), require('redux-shuttle/helper'), require('redux-shuttle/validator'), require('./util'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.ramda, global.reduxSaga, global.effects, global.reduxShuttle, global.helper, global.validator, global.util);
+    factory(mod, mod.exports, global.ramda, global.reduxSaga, global.effects, global.reduxShuttle, global.helper, global.validator, global.util);
     global.SagaShuttle = mod.exports;
   }
-})(this, function (exports, _ramda, _reduxSaga, _effects, _reduxShuttle, _helper, _validator, _util) {
+})(this, function (module, exports, _ramda, _reduxSaga, _effects, _reduxShuttle, _helper, _validator, _util) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -295,4 +295,5 @@
   }();
 
   exports.default = SagaShuttle;
+  module.exports = exports['default'];
 });

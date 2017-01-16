@@ -1,7 +1,6 @@
 import { createShuttle } from 'redux-shuttle';
-import { SagaShuttle } from 'dist/index';
+import { SagaShuttle } from 'es/index';
 import Immutable from 'immutable';
-import diff from 'seamless-immutable-diff';
 import _ from 'lodash';
 
 const initState = Immutable.fromJS({
@@ -14,7 +13,6 @@ window.cust = initState;
 
 window.Immutable = Immutable;
 window.parse = (o) => JSON.parse(JSON.stringify(o));
-window.diff = diff;
 window._ = _;
 
 const shuttle = createShuttle('App/cust', initState, {

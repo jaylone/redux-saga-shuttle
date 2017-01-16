@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', 'redux-saga/effects', 'redux-shuttle/helper', 'redux-shuttle/validator'], factory);
+    define(['module', 'exports', 'redux-saga/effects', 'redux-shuttle/helper', 'redux-shuttle/validator'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('redux-saga/effects'), require('redux-shuttle/helper'), require('redux-shuttle/validator'));
+    factory(module, exports, require('redux-saga/effects'), require('redux-shuttle/helper'), require('redux-shuttle/validator'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.effects, global.helper, global.validator);
+    factory(mod, mod.exports, global.effects, global.helper, global.validator);
     global.combineSagas = mod.exports;
   }
-})(this, function (exports, _effects, _helper, _validator) {
+})(this, function (module, exports, _effects, _helper, _validator) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -47,4 +47,6 @@
       }, _callee, this);
     });
   };
+
+  module.exports = exports['default'];
 });

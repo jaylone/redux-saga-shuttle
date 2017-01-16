@@ -4,12 +4,12 @@ import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware, { END } from 'redux-saga';
 import { createShuttleTree } from 'redux-shuttle';
-import { combineSagas } from 'dist/index';
+
+import { combineSagas } from 'es/index';
 
 import { sagas as authorSaga, shuttle as author } from './sagaShuttle';
 import { sagas as custSaga, shuttle as cust } from './custSagaShuttle';
 import App from './App';
-
 const reducers = createShuttleTree({ author, cust });
 const sagaMiddleware = createSagaMiddleware();
 const enhancer = window.devToolsExtension ? window.devToolsExtension() : f => f;

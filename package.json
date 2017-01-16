@@ -6,7 +6,8 @@
   "scripts": {
     "start": "node server.js",
     "build:umd:prod": "npm run eslint && webpack --verbose --colors --display-error-details --config webpack.build.config.js",
-    "build:es": "cross-env BABEL_ENV=es babel src --out-dir es",
+    "build:es": "babel src --out-dir es",
+    "prepublish": "npm run build:es",
     "eslint": "eslint src"
   },
   "repository": {
@@ -31,7 +32,7 @@
   "dependencies": {
     "redux": "^3.6.0",
     "redux-saga": "^0.13.0",
-    "redux-shuttle": "^0.3.0"
+    "redux-shuttle": "^0.3.3"
   },
   "devDependencies": {
     "axios": "^0.15.2",
@@ -47,6 +48,7 @@
     "babel-preset-react": "^6.16.0",
     "babel-preset-stage-0": "^6.16.0",
     "babel-register": "^6.18.0",
+    "cross-env": "^3.1.4",
     "eslint": "^3.10.2",
     "eslint-plugin-react": "^6.7.1",
     "file-loader": "^0.9.0",

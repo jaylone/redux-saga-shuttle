@@ -1,16 +1,16 @@
 (function (global, factory) {
   if (typeof define === "function" && define.amd) {
-    define(['exports', 'src/lib/SagaShuttle', 'src/lib/combineSagas'], factory);
+    define(['module', 'exports', 'src/lib/SagaShuttle', 'src/lib/combineSagas'], factory);
   } else if (typeof exports !== "undefined") {
-    factory(exports, require('src/lib/SagaShuttle'), require('src/lib/combineSagas'));
+    factory(module, exports, require('src/lib/SagaShuttle'), require('src/lib/combineSagas'));
   } else {
     var mod = {
       exports: {}
     };
-    factory(mod.exports, global.SagaShuttle, global.combineSagas);
+    factory(mod, mod.exports, global.SagaShuttle, global.combineSagas);
     global.index = mod.exports;
   }
-})(this, function (exports, _SagaShuttle, _combineSagas) {
+})(this, function (module, exports, _SagaShuttle, _combineSagas) {
   'use strict';
 
   Object.defineProperty(exports, "__esModule", {
@@ -31,4 +31,5 @@
     SagaShuttle: _SagaShuttle2.default,
     combineSagas: _combineSagas2.default
   };
+  module.exports = exports['default'];
 });

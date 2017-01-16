@@ -2,7 +2,7 @@ import { createShuttle } from 'redux-shuttle';
 import { takeEvery } from 'redux-saga';
 import { call, fork, put, select, take } from 'redux-saga/effects';
 import axios from 'axios';
-import { SagaShuttle } from 'dist/index';
+import { SagaShuttle } from 'es/index';
 import Immutable from 'immutable';
 
 const initState = Immutable.fromJS({
