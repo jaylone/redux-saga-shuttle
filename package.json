@@ -1,6 +1,6 @@
 {
   "name": "redux-saga-shuttle",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "A saga plugin for redux-shuttle",
   "main": "es/index.js",
   "scripts": {
@@ -32,7 +32,7 @@
   "dependencies": {
     "redux": "^3.6.0",
     "redux-saga": "^0.15.4",
-    "redux-shuttle": "^0.3.3"
+    "redux-shuttle": "^0.3.6"
   },
   "devDependencies": {
     "axios": "^0.15.2",
