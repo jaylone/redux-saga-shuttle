@@ -5,7 +5,7 @@
   "main": "es/index.js",
   "scripts": {
     "start": "node server.js",
-    "build:umd:prod": "npm run eslint && webpack --verbose --colors --display-error-details --config webpack.build.config.js",
+    "build:umd:prod": "npm run eslint &&  && cross-env NODE_ENV=production BABEL_ENV=prod webpack --verbose --colors --display-error-details --config webpack.build.config.js",
     "build:es": "babel src --out-dir es",
     "prepublish": "npm run build:es && npm run build:umd:prod",
     "eslint": "eslint src"
